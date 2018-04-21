@@ -1,0 +1,1 @@
+# kt_banner_promote
