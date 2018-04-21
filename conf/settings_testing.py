@@ -23,7 +23,7 @@ DATABASES = {
         'NAME': APP_ID + "-test",
         'USER': 'root',
         'PASSWORD': 'bk@321',
-        'HOST': '192.168.116.91',
+        'HOST': '192.168.116.92',
         'PORT': 3306,
     },
 }
