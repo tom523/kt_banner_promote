@@ -1,0 +1,27 @@
+
+
+<link href="https://magicbox.bkclouds.cc/static_api/v3/bk/css/bk.css" rel="stylesheet">
+<link href="https://magicbox.bkclouds.cc/static_api/v3/assets/artDialog-6.0.4/css/ui-dialog.css" rel="stylesheet">
+<script src="https://magicbox.bkclouds.cc/static_api/v3/assets/js/jquery-1.10.2.min.js"></script>
+<script src="https://magicbox.bkclouds.cc/static_api/v3/assets/artDialog-6.0.4/dist/dialog-min.js"></script>
+
+<button class="king-btn king-info mb15" data-code="2" id="plugin4_demo2">模态对话框</button>
+<script type="text/javascript">
+    //模态对话框
+    $("#plugin4_demo2").click(function() {
+        var d = dialog({
+            width: 260,
+            title: 'message',
+            content: '<textarea class="form-control" style="height:60px;"></textarea>',
+            okValue: '确定',
+            ok: function() {
+                // do something
+            },
+            cancelValue: '取消',
+            cancel: function() {
+                // do something
+            }
+        });
+        d.showModal();
+    });
+</script>

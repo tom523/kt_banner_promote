@@ -1,0 +1,395 @@
+<%inherit file="../base.html"/>
+<%block name="content">
+<div class="king-block king-block-bordered">
+    <div class="king-block-header king-gray-light">
+        <ul class="king-block-options">
+            <li>
+                <button type="button"><i class="fa fa-cog"></i></button>
+            </li>
+        </ul>
+        <h3 class="king-block-title">填写促销信息</h3>
+    </div>
+    <div class="king-block-content">
+        <div class="king-loading" id="loding-img-2" style="display: none;">
+            <img src="https://magicbox.bk.tencent.com/static_api/v3/components/loading1/images/loading_2_b_36x36.gif" />
+        </div>
+        <form id="my_form" class="form-horizontal row" method="POST">
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>基本信息</div>
+                    <div class="panel-body" style="height: 800px">
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">选择图片：</label>
+                            <div class="col-sm-7"><input type="file" name="file" value="select" id="select_pic"></div>
+                            <span class="text-danger mt5 fl">*</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">日期范围：</label>
+                            <div class="col-sm-7"><input type="text" class="form-control daterangepicker_demo" id="daterangepicker_id"></div>
+                            <span class="text-dange mt5 fl">*</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="" class="col-sm-3 control-label">时间范围：</label>
+                            <div class="col-sm-2" id="clockpicker_start">
+                                <input type="text" class="form-control" id="time_start">
+                            </div>
+                            <div class="col-sm-2" id="clockpicker_end">
+                                <input type="text" class="form-control" id="time_end">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="descCN" class="col-sm-3 control-label">促销名称：</label>
+                            <div class="col-sm-7">
+                                <input type="text" class="form-control" id="descCN" placeholder="">
+                            </div>
+                            <span class="text-danger mt5 fl">*</span>
+                        </div>
+                        <div class="form-group">
+                            <label for="sortNum" class="col-sm-3 control-label">排序号：</label>
+                            <div class="col-sm-7">
+                                <input type="email" class="form-control" id="sortNum" placeholder="">
+
+                            </div>
+                            <span class="text-danger mt5 fl">*</span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wmts" class="col-sm-3 control-label">外卖或堂食：</label>
+                            <div class="col-sm-7">
+                                <select name="" id="wmts" class="form-control">
+                                    <option value="1">外卖</option>
+                                    <option value="2">堂食</option>
+                                    <option value="1,2">外卖和堂食</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">周几参加活动：</label>
+                            <div class="col-sm-7">
+                                <div id="day_check" class="checkbox">
+                                    <!-- <button type="button" class="king-btn king-default" action="checkAll">选择全部</button> -->
+                                    <label class="mr10">
+                                        <input id="sunday_check" type="checkbox" value=""> 星期日
+                                    </label>
+                                    <label class="mr10">
+                                        <input id="monday_check" type="checkbox" value=""> 星期一
+                                    </label>
+                                    <label class="mr10">
+                                        <input id="tuesday_check" type="checkbox" value=""> 星期二
+                                    </label>
+                                    <label class="mr10">
+                                        <input id="wednesday_check" type="checkbox" value=""> 星期三
+                                    </label>
+                                    <label class="mr10">
+                                        <input id="thursday_check" type="checkbox" value=""> 星期四
+                                    </label>
+                                    <label class="mr10">
+                                        <input id="friday_check" type="checkbox" value=""> 星期五
+                                    </label>
+                                    <label class="mr10">
+                                        <input id='saturday_check' type="checkbox" value=""> 星期六
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3">节假日：</label>
+                            <div class="col-sm-7">
+                                <div id="holiday" class="radio">
+                                    <label class="mr10">
+                                        <input type="radio" name="optionsRadios" id="optionsRadiosY" value="" checked="">参加活动
+                                    </label>
+                                    <label>
+                                        <input type="radio" name="optionsRadios" id="optionsRadiosN" value="">不参加活动
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <!-- 左边表单结束 -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="king-page-box king-layout1-main clearfix">
+                        <!-- 左边 start -->
+                        <div class="king-layout1-sidebar column ui-container" style="width:216px;">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>选择门店</div>
+                                <div class="panel-body" style="height: 800px; overflow: scroll">
+                                    <div id="treeview_demo8">
+                                        <div id="listenersDemoTree"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 左边 end -->
+                        <!-- content start -->
+                        <div class="king-content-wrap">
+                            <div class="king-layout1-content ui-container" style="margin-left: 216px; background:#eee; min-height:300px;">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>已选门店</div>
+                                    <div class="panel-body" style="height: 800px; overflow: scroll">
+                                        <div id="selectedContainer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- content end -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-7 col-sm-offset-3">
+##                     <input type="submit" class="king-btn king-success mr10" id="new_promote" value="提交">
+                    <a class="king-btn king-primary" id="new_promote" onclick="new_promote()">提交</a>
+                    <input type="reset" class="king-btn king-default" value="取消">
+                </div>
+            </div>
+        </form>
+    </div>
+    <script type="text/javascript">
+
+     // 单个日期和日期范围选择
+    var optionSet1 = {
+        startDate: moment(),
+        endDate: moment(),
+        minDate: '01/01/2012',
+        maxDate: '12/31/2020',
+        showDropdowns: true,
+        showWeekNumbers: true,
+        timePicker: false,
+        timePickerIncrement: 1,
+        timePicker12Hour: true,
+        ranges: {
+            '今日': [moment(), moment()],
+            '昨天': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '最近一个星期': [moment().subtract(6, 'days'), moment()],
+            '最近一个月': [moment().subtract(29, 'days'), moment()],
+            '这个月': [moment().startOf('month'), moment().endOf('month')],
+            '上个月': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        opens: 'right',
+        buttonClasses: ['btn btn-default'],
+        applyClass: 'btn-sm btn-primary',
+        cancelClass: 'btn-sm',
+        format: 'MM/DD/YYYY',
+        separator: ' to ',
+        locale: {
+            applyLabel: '提交',
+            cancelLabel: '取消',
+            fromLabel: '从',
+            toLabel: '到',
+            weekLabel: '周',
+            customRangeLabel: '自定义范围',
+            daysOfWeek: ['日', '一', '二', '三', '四', '五','六'],
+            monthNames: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+            firstDay: 1
+        }
+    };
+    $('#daterangepicker_id').daterangepicker(optionSet1, function(start, end, label){
+        $('#daterangepicker_demo4 span').html(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
+    });
+
+    $('#clockpicker_start,#clockpicker_end').clockpicker();
+
+    $('#day_check,#holiday input').iCheck({
+        checkboxClass: 'icheckbox_square-blue',
+        radioClass: 'iradio_square-blue',
+        increaseArea: '20%' // optional
+    });
+
+    //获取门店信息
+     store_query_url = 'store_query'
+    $('#loding-img-2').show()
+     $('#forbidden_layer').show()
+     $.get(store_query_url, function (retdata) {
+         $('#loding-img-2').hide()
+         $('#forbidden_layer').hide()
+         console.log(retdata.message)
+         var treeview = $('#listenersDemoTree').data('kendoTreeView');
+         treeview.setDataSource(new kendo.data.HierarchicalDataSource({
+             'data': retdata.message
+         }));
+     }, 'json')
+
+    // kendo tree
+    // 事件样例
+    var treeviewListenerDemo=function(option){
+        this.selected=[];
+        this.init(option);
+    }
+    treeviewListenerDemo.prototype={
+         constructor:treeviewListenerDemo,
+         init:function(option){
+             var opt={
+                treeContainer:'#listenersDemoTree',
+                selectedContainer:'#selectedContainer',
+                dataSource:[{
+                    text: "加载中...",
+                    items: [
+                    ]
+                 },
+                  ]
+             };
+             this.option=$.extend(opt,option);
+             this.treeContainer=$(this.option.treeContainer);
+             this.selectedContainer=$(this.option.selectedContainer);
+             this.initTree();
+             this.initEvent();
+         },
+         initTree:function(){
+             this.treeContainer.kendoTreeView({
+                checkboxes: {
+                    checkChildren : true
+                },
+                dataSource: this.option.dataSource,
+                check: this._onCheck.bind(this),
+                 messages: {
+                    loading: "加载中......"
+                 }
+             });
+             this.treeView=this.treeContainer.data("kendoTreeView");
+         },
+         _onCheck:function(e){
+             var me=this;
+             me.selected=[];
+             function getChecked(nodes) {
+                 for (var i = 0; i < nodes.length; i++) {
+                     if (nodes[i].hasChildren) {
+                         getChecked(nodes[i].children.view());
+                     }else if (nodes[i].checked&&nodes[i].parentNode()) {
+                         me.selected.push(nodes[i]);
+                     }
+                 }
+             }
+             getChecked(me.treeView.dataSource.view());
+             me.upSelected();
+         },
+         upSelected:function(){
+             var me=this,
+                 selected=me.selected,
+                 node,
+                 nodeText=[],
+                 html='';
+             if(selected.length){
+                 html="<ul>";
+                 for(var i=0;i<selected.length;i++){
+                     node=selected[i];
+                     nodeText.push('<li style="float:left; width:110px"><input type="checkbox" checked>'+node.text+'</li>');
+                 }
+                 html+=nodeText.join('');
+                 html+='</ul>';
+             }
+             this.selectedContainer.html(html);
+         },
+         _remove:function(e){
+             var me=this,
+                 item=e.target.parentNode,
+                 items=item.parentNode.childNodes;
+             for(var i=0;i<items.length;i++){
+                 if(item==items[i]){
+                    me.selected[i].checked=false;
+                    me.treeView.findByText(me.selected[i].text).find('input').attr('checked',false);
+                    me._onCheck();
+                    break;
+                 }
+             }
+         },
+         initEvent:function(){
+             var me=this;
+             me.selectedContainer.on('click.listenerDemo','input',function(e){
+                 me._remove(e);
+             });
+         }
+    }
+    var listenerDemo=new treeviewListenerDemo();
+
+
+     $('#my_form').submit(function (e) {
+         e.preventDefault();
+         alert("prefent!!")
+     })
+
+     $('#select_pic').on("change", function () {
+         console.log(this.files)
+         filename = this.files[0].name;
+         console.log(filename)
+     })
+     function new_promote(){
+         $('#loding-img-2').show()
+         $('#forbidden_layer').show()
+         datarange = $('#daterangepicker_id').val()
+         console.log(datarange)
+         time_start = $('#time_start').val()
+         time_end = $('#time_end').val()
+         console.log(time_start)
+         descCN = $('#descCN').val()
+         sortNum = $('#sortNum').val()
+         wmts = $('#wmts').val()
+         sunday_check = $('#sunday_check').parent().hasClass('checked')
+         monday_check = $('#monday_check').parent().hasClass('checked')
+         tuesday_check = $('#tuesday_check').parent().hasClass('checked')
+         wednesday_check =$('#wednesday_check').parent().hasClass('checked')
+         thursday_check = $('#thursday_check').parent().hasClass('checked')
+         friday_check =$('#friday_check').parent().hasClass('checked')
+         saturday_check = $('#saturday_check').parent().hasClass('checked')
+         optionsRadiosY = $('#optionsRadiosY').parent().hasClass('checked')
+         optionsRadiosN =$('#optionsRadiosN').parent().hasClass('checked')
+         storedata = listenerDemo.selected
+         console.log(typeof(storedata))
+         console.log(typeof(JSON.stringify(storedata)))
+          postdata = {
+              pic_name: filename,
+              prmt_datarange: datarange,
+              prmt_time_start: time_start,
+              prmt_time_end: time_end,
+              prmt_descCN: descCN,
+              prmt_sortNum: sortNum,
+              prmt_wmts: wmts,
+              join_sunday: sunday_check,
+              join_monday: monday_check,
+              join_tuesday: tuesday_check,
+              join_wednesday: wednesday_check,
+              join_thursday: thursday_check,
+              join_friday: friday_check,
+              join_saturday: saturday_check,
+              join_holiday: optionsRadiosY,
+              join_store: JSON.stringify(storedata)
+          }
+         console.log(postdata)
+         submit_url = 'rrrrr'
+
+          $.ajax({
+              url: submit_url,
+              type: "POST",
+               data: postdata,
+              dataType: 'json',
+               headers: {"X-CSRFtoken":$.cookie("csrftoken")},
+              success: function (retdata) {
+                  $('#loding-img-2').hide()
+                  $('#forbidden_layer').hide()
+                  if(retdata.result == "success")
+                  {
+                      console.log(retdata)
+                      window.location.href='/'
+                  }
+              },
+              error: function (retdata) {
+                  alert(retdata)
+              }
+          })
+     }
+
+     ##  $('#new_promote').click(function () {
+     ##
+     ##      ##  $.post(submit_url, postdata, function () {
+     ##      ##      alert('dddddd')
+     ##      ##  }, 'json')
+     ##  })
+    </script>
+</div>
+</%block>
