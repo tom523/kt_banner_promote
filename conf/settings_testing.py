@@ -20,10 +20,10 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 默认用mysql
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USERNAME'),
-        'PASSWORD': os.environ.get('DB_PASSWORD'),
-        'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
+        'NAME': APP_ID + "-test",
+        'USER': 'root',
+        'PASSWORD': 'bk@321',
+        'HOST': '192.168.116.91',
+        'PORT': 3306,
     },
 }
