@@ -280,7 +280,7 @@ def add_promote_record(request):
         "prmt_wmts": prmt_wmts,
         "join_day_str": format_join_day(join_sunday, join_monday, join_tuesday, join_wednesday, join_thursday, join_friday, join_saturday),
         "join_holiday": join_holiday_format,
-        "store_id_list": ','.join(store_id_list)
+        "store_id_list": "NULL" if len(store_id_list) == 0 else ','.join(store_id_list)
     }
     scriptParam_list = [
         scriptParam['pic_name'],
