@@ -31,7 +31,7 @@ from django.conf.global_settings import *  # noqa
 # ==============================================================================
 # 在蓝鲸智云开发者中心 -> 点击应用ID -> 基本信息 中获取 APP_ID 和 APP_TOKEN 的值
 APP_ID = 'kt-banner-prmt'
-APP_TOKEN = 'e5ff9996-06d3-49b9-9fcb-4f12cf6eb436'
+APP_TOKEN = '63071763-3e74-458b-b254-c5e526165ac0'
 # 蓝鲸智云开发者中心的域名，形如：http://paas.bking.com
 BK_PAAS_HOST = 'http://paas.blueking.com'
 

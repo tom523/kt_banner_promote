@@ -20,10 +20,18 @@ import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 默认用mysql
-        'NAME': APP_ID + "-test",
-        'USER': 'root',
-        'PASSWORD': 'bk@321',
-        'HOST': '192.168.116.92',
-        'PORT': 3306,
+        'NAME': "kt_banner_prmt_local_app",                        # 数据库名 (默认与APP_ID相同)
+        'USER': 'root',                        # 你的数据库user
+        'PASSWORD': '000000',                        # 你的数据库password
+        'HOST': '192.168.200.11',                   # 开发的时候，使用localhost
+        'PORT': '3306',                        # 默认3306
+    },
+    't_bi_banner': {
+        'ENGINE': 'django.db.backends.mysql',  # 默认用mysql
+        'NAME': "kt_banner_prmt_t_bi_banner",  # 数据库名 (默认与APP_ID相同)
+        'USER': 'root',  # 你的数据库user
+        'PASSWORD': '123456',  # 你的数据库password
+        'HOST': '192.168.200.11',  # 开发的时候，使用localhost
+        'PORT': '3306',  # 默认3306
     },
 }
