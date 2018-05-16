@@ -18,6 +18,7 @@ urlpatterns = patterns(
     (r'^contactus/$', 'contactus'),
 
     (r'^t_bi_banner', 't_bi_banner'),
+    (r'^add_storeid_to_exceptStore', 'add_storeid_to_exceptStore'),
     (r'new_promote', 'new_promote'),
     (r'promote_expand', 'promote_expand'),
     (r'^store_query', 'store_query'),

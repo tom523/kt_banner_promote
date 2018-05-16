@@ -1,193 +1,193 @@
 <%inherit file="../base.html"/>
 <%block name="content">
 ##     门店信息侧边栏start
-       <div id="side_content_close">
-          <div id="side_content">
-
-                    <div class="king-page-box king-layout1-main clearfix">
-                        <!-- 左边 start -->
-                        <div class="king-layout1-sidebar column ui-container" style="width:216px;">
-                            <div class="panel panel-default">
-                                <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>选择门店</div>
-                                <div class="panel-body" style="height: 648px; overflow: scroll">
-                                    <div id="treeview_demo8">
-                                        <div id="listenersDemoTree"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 左边 end -->
-                        <!-- content start -->
-                        <div class="king-content-wrap">
-                            <div class="king-layout1-content ui-container" style="margin-left: 216px; background:#eee; min-height:300px;">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>已选门店</div>
-                                    <div class="panel-body" style="height: 648px; overflow: scroll">
-                                        <div id="selectedContainer"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- content end -->
-                    </div>
-
-
-                    <script>
-
-
-
-
-                        // kendo tree
-                        // 事件样例
-                        var treeviewListenerDemo=function(option){
-                            this.selected=[];
-                            this.init(option);
-                        }
-                        treeviewListenerDemo.prototype={
-                             constructor:treeviewListenerDemo,
-                             init:function(option){
-
-                                 var opt={
-                                    treeContainer:'#listenersDemoTree',
-                                    selectedContainer:'#selectedContainer',
-                                    dataSource:[{
-                                        text: "加载中...",
-                                        items: [
-                                        ]
-                                     },
-                                      ]
-                                 };
-                                 this.option=$.extend(opt,option);
-                                 this.treeContainer=$(this.option.treeContainer);
-                                 console.log(this.treeContainer)
-                                 this.selectedContainer=$(this.option.selectedContainer);
-                                 console.log(this.selectedContainer)
-                                 console.log(this)
-
-
-
-                                 this.initTree();
-                                 this.initEvent();
-                             },
-                             initTree:function(){
-                                 this.treeContainer.kendoTreeView({
-                                    checkboxes: {
-                                        checkChildren : true
-                                    },
-                                    dataSource: this.option.dataSource,
-                                    check: this._onCheck.bind(this),
-                                    messages: {
-                                        loading: "加载中..."
-                                    }
-                                 });
-                                 this.treeView=this.treeContainer.data("kendoTreeView");
-                             },
-                             _onCheck:function(e){
-                                 console.log("executing here")
-                                 console.log(e)
-                                 var me=this;
-                                 me.selected=[];
-                                 function getChecked(nodes) {
-                                     for (var i = 0; i < nodes.length; i++) {
-                                         if (nodes[i].hasChildren) {
-                                             getChecked(nodes[i].children.view());
-                                         }else if (nodes[i].checked&&nodes[i].parentNode()) {
-                                             me.selected.push(nodes[i]);
-                                         }
-                                     }
-                                 }
-                                 getChecked(me.treeView.dataSource.view());
-                                 me.upSelected();
-                             },
-                             upSelected:function(){
-                                 var me=this,
-                                     selected=me.selected,
-                                     node,
-                                     nodeText=[],
-                                     html='';
-                                 if(selected.length){
-                                     html="<ul>";
-                                     for(var i=0;i<selected.length;i++){
-                                         node=selected[i];
-                                         nodeText.push('<li style="float:left; width:110px"><input type="checkbox" checked>'+node.text+'</li>');
-                                     }
-                                     html+=nodeText.join('');
-                                     html+='</ul>';
-                                 }
-                                 this.selectedContainer.html(html);
-                             },
-                             _remove:function(e){
-                                 var me=this,
-                                     item=e.target.parentNode,
-                                     items=item.parentNode.childNodes;
-                                 for(var i=0;i<items.length;i++){
-                                     if(item==items[i]){
-                                        me.selected[i].checked=false;
-                                        me.treeView.findByText(me.selected[i].text).find('input').attr('checked',false);
-                                        me._onCheck();
-                                        break;
-                                     }
-                                 }
-                             },
-                             initEvent:function(){
-                                 var me=this;
-                                 me.selectedContainer.on('click.listenerDemo','input',function(e){
-                                     me._remove(e);
-                                 });
-                             }
-                        }
-                        var listenerDemo=new treeviewListenerDemo();
-
-
-
-                    </script>
-                    <a href="#side_content_close" class="king-btn king-primary hidden" id="upload_storeid">确认</a>
-                    <a href="#side_content_close" class="king-btn king-primary" id="side_content_cancel">取消</a>
-
-
-          </div>
-       </div>
+##        <div id="side_content_close">
+##           <div id="side_content">
+##
+##                     <div class="king-page-box king-layout1-main clearfix">
+##                         <!-- 左边 start -->
+##                         <div class="king-layout1-sidebar column ui-container" style="width:216px;">
+##                             <div class="panel panel-default">
+##                                 <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>选择门店</div>
+##                                 <div class="panel-body" style="height: 648px; overflow: scroll">
+##                                     <div id="treeview_demo8">
+##                                         <div id="listenersDemoTree"></div>
+##                                     </div>
+##                                 </div>
+##                             </div>
+##                         </div>
+##                         <!-- 左边 end -->
+##                         <!-- content start -->
+##                         <div class="king-content-wrap">
+##                             <div class="king-layout1-content ui-container" style="margin-left: 216px; background:#eee; min-height:300px;">
+##                                 <div class="panel panel-default">
+##                                     <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>已选门店</div>
+##                                     <div class="panel-body" style="height: 648px; overflow: scroll">
+##                                         <div id="selectedContainer"></div>
+##                                     </div>
+##                                 </div>
+##                             </div>
+##                         </div>
+##                         <!-- content end -->
+##                     </div>
+##
+##
+## ##                     <script>
+##
+##
+##
+##
+##                         // kendo tree
+##                         // 事件样例
+##                     ##      var treeviewListenerDemo=function(option){
+##                     ##          this.selected=[];
+##                     ##          this.init(option);
+##                     ##      }
+##                     ##      treeviewListenerDemo.prototype={
+##                     ##           constructor:treeviewListenerDemo,
+##                     ##           init:function(option){
+##                     ##
+##                     ##               var opt={
+##                     ##                  treeContainer:'#listenersDemoTree',
+##                     ##                  selectedContainer:'#selectedContainer',
+##                     ##                  dataSource:[{
+##                     ##                      text: "加载中...",
+##                     ##                      items: [
+##                     ##                      ]
+##                     ##                   },
+##                     ##                    ]
+##                     ##               };
+##                     ##               this.option=$.extend(opt,option);
+##                     ##               this.treeContainer=$(this.option.treeContainer);
+##                     ##               console.log(this.treeContainer)
+##                     ##               this.selectedContainer=$(this.option.selectedContainer);
+##                     ##               console.log(this.selectedContainer)
+##                     ##               console.log(this)
+##                     ##
+##                     ##
+##                     ##
+##                     ##               this.initTree();
+##                     ##               this.initEvent();
+##                     ##           },
+##                     ##           initTree:function(){
+##                     ##               this.treeContainer.kendoTreeView({
+##                     ##                  checkboxes: {
+##                     ##                      checkChildren : true
+##                     ##                  },
+##                     ##                  dataSource: this.option.dataSource,
+##                     ##                  check: this._onCheck.bind(this),
+##                     ##                  messages: {
+##                     ##                      loading: "加载中..."
+##                     ##                  }
+##                     ##               });
+##                     ##               this.treeView=this.treeContainer.data("kendoTreeView");
+##                     ##           },
+##                     ##           _onCheck:function(e){
+##                     ##               console.log("executing here")
+##                     ##               console.log(e)
+##                     ##               var me=this;
+##                     ##               me.selected=[];
+##                     ##               function getChecked(nodes) {
+##                     ##                   for (var i = 0; i < nodes.length; i++) {
+##                     ##                       if (nodes[i].hasChildren) {
+##                     ##                           getChecked(nodes[i].children.view());
+##                     ##                       }else if (nodes[i].checked&&nodes[i].parentNode()) {
+##                     ##                           me.selected.push(nodes[i]);
+##                     ##                       }
+##                     ##                   }
+##                     ##               }
+##                     ##               getChecked(me.treeView.dataSource.view());
+##                     ##               me.upSelected();
+##                     ##           },
+##                     ##           upSelected:function(){
+##                     ##               var me=this,
+##                     ##                   selected=me.selected,
+##                     ##                   node,
+##                     ##                   nodeText=[],
+##                     ##                   html='';
+##                     ##               if(selected.length){
+##                     ##                   html="<ul>";
+##                     ##                   for(var i=0;i<selected.length;i++){
+##                     ##                       node=selected[i];
+##                     ##                       nodeText.push('<li style="float:left; width:110px"><input type="checkbox" checked>'+node.text+'</li>');
+##                     ##                   }
+##                     ##                   html+=nodeText.join('');
+##                     ##                   html+='</ul>';
+##                     ##               }
+##                     ##               this.selectedContainer.html(html);
+##                     ##           },
+##                     ##           _remove:function(e){
+##                     ##               var me=this,
+##                     ##                   item=e.target.parentNode,
+##                     ##                   items=item.parentNode.childNodes;
+##                     ##               for(var i=0;i<items.length;i++){
+##                     ##                   if(item==items[i]){
+##                     ##                      me.selected[i].checked=false;
+##                     ##                      me.treeView.findByText(me.selected[i].text).find('input').attr('checked',false);
+##                     ##                      me._onCheck();
+##                     ##                      break;
+##                     ##                   }
+##                     ##               }
+##                     ##           },
+##                     ##           initEvent:function(){
+##                     ##               var me=this;
+##                     ##               me.selectedContainer.on('click.listenerDemo','input',function(e){
+##                     ##                   me._remove(e);
+##                     ##               });
+##                     ##           }
+##                     ##      }
+##                     ##      var listenerDemo=new treeviewListenerDemo();
+##                     ##
+##                     ##
+##                     ##
+##                     ##  </script>
+##                     <a href="#side_content_close" class="king-btn king-primary hidden" id="upload_storeid">确认</a>
+##                     <a href="#side_content_close" class="king-btn king-primary" id="side_content_cancel">取消</a>
+##
+##
+##           </div>
+##        </div>
     ##     门店信息侧边栏end
     ##     门店id查询侧边栏start
-       <div id="side_content_query_id_close">
-          <div id="side_content_query_id">
-              <div class="panel panel-default">
-                  <div class="panel-heading">
-                      门店ID查询【当前ID：<span id="side_content_query_id_title"></span>】
-                  </div>
-                  <div class="panel-body" style="height: 648px; overflow: scroll">
-                           <textarea style="height: 200px; width: 100%" id="storeid_textarea"></textarea>
-                           <a class="king-btn king-default" title="查询ID" id="inner_query_btn">查询ID</a>
-                      <div class="king-instruction king-instruction-info" id="query_result_not_in_wrap" style="display: none">
-                          <div style="height: 48px">
-                              <h5 class="pull-left">不在exceptStore字段中（活动门店）</h5>
-                              <a class="king-default king-btn pull-right" id="submitTo_exceptStore">关闭以下门店的活动</a>
-                          </div>
-                          <div id="query_result_not_in"></div>
-
-                      </div>
-                      <div class="king-instruction king-instruction-success" id="query_result_in_wrap" style="display: none;">
-                          <div style="height: 48px">
-                              <h5 class="pull-left">在exceptStore字段中（非活动门店）</h5>
-                              <a class="king-default king-btn pull-right" id="removeFrom_exceptStore">开启以下门店的活动</a>
-                          </div>
-                        <div id="query_result_in"></div>
-                      </div>
-
-                  </div>
-              </div>
-                    <a href="#side_content_query_id_close" class="king-btn king-primary hidden" id="upload_storeid">确认</a>
-                    <a href="#side_content_query_id_close" class="king-btn king-primary" id="queryid_side_content_cancel">取消</a>
-##                     <a href="" class="king-btn king-primary" id="submitTo_exceptStore">提交</a>
-##                     <a href="" class="king-btn king-primary" id="removeFrom_exceptStore">删除</a>
-          </div>
-       </div>
-    ##     门店id查询侧边栏end
-       <div class="king-layout2-main mt15" style="width:1360px;">
+##        <div id="side_content_query_id_close">
+##           <div id="side_content_query_id">
+##               <div class="panel panel-default">
+##                   <div class="panel-heading">
+##                       门店ID查询【当前ID：<span id="side_content_query_id_title"></span>】
+##                   </div>
+##                   <div class="panel-body" style="height: 648px; overflow: scroll">
+##                            <textarea style="height: 200px; width: 100%" id="storeid_textarea"></textarea>
+##                            <a class="king-btn king-default" title="查询ID" id="inner_query_btn">查询ID</a>
+##                       <div class="king-instruction king-instruction-info" id="query_result_not_in_wrap" style="display: none">
+##                           <div style="height: 48px">
+##                               <h5 class="pull-left">不在exceptStore字段中（活动门店）</h5>
+##                               <a class="king-default king-btn pull-right" id="submitTo_exceptStore">关闭以下门店的活动</a>
+##                           </div>
+##                           <div id="query_result_not_in"></div>
+##
+##                       </div>
+##                       <div class="king-instruction king-instruction-success" id="query_result_in_wrap" style="display: none;">
+##                           <div style="height: 48px">
+##                               <h5 class="pull-left">在exceptStore字段中（非活动门店）</h5>
+##                               <a class="king-default king-btn pull-right" id="removeFrom_exceptStore">开启以下门店的活动</a>
+##                           </div>
+##                         <div id="query_result_in"></div>
+##                       </div>
+##
+##                   </div>
+##               </div>
+##                     <a href="#side_content_query_id_close" class="king-btn king-primary hidden" id="upload_storeid">确认</a>
+##                     <a href="#side_content_query_id_close" class="king-btn king-primary" id="queryid_side_content_cancel">取消</a>
+## ##                     <a href="" class="king-btn king-primary" id="submitTo_exceptStore">提交</a>
+## ##                     <a href="" class="king-btn king-primary" id="removeFrom_exceptStore">删除</a>
+##           </div>
+##        </div>
+##     ##     门店id查询侧边栏end
+       <div class="king-layout2-main mt15">
             <div class="panel panel-default mb0">
                 <div class="panel-heading">
                     促销banner表（t_bi_banner）
-                    <a href="./new_promote" class="king-btn king-primary">新上促销</a>
+##                     <a href="./new_promote" class="king-btn king-primary">新上促销</a>
                 </div>
                 <div class="panel-body">
 
@@ -227,10 +227,12 @@
                             <td style="width: auto;">#endtime#</td>
                             <td style="width: auto;">#channelld#</td>
                             <td style="width: 100px;">
-                                <a href="#side_content" class="king-btn-demo king-btn king-radius
-                            king-default" data-id="#bannerid#" title="活动门店" onclick="change_store(#bannerid#)">#exceptStore#</a>
-                                <a href="#side_content_query_id" class="king-btn-demo king-btn king-radius
-                            king-default" title="查询" onclick="query_store_id(#bannerid#)">ID查询</a>
+##                                 <a href="#side_content" class="king-btn-demo king-btn king-radius
+##                             king-default" data-id="#bannerid#" title="活动门店" onclick="change_store(#bannerid#)">#exceptStore#</a>
+##                                 <a href="#side_content_query_id" class="king-btn-demo king-btn king-radius
+##                             king-default" title="查询" onclick="query_store_id(#bannerid#)">ID查询</a>
+                                 <a href="" class="king-btn-demo king-btn king-radius
+                                king-default" title="查询" onclick="do_exceptStore(#bannerid#);return false;">门店活动到期</a>
                             </td>
                             <td style="width: auto;">#holiday#</td>
                             <td style="width: auto;">#dayofweek#</td>

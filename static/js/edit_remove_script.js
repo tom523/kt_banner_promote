@@ -165,7 +165,7 @@ function expand(banner_id) {
             url = 'promote_expand?new_expandto='+ new_expandto + '&banner_id=' + banner_id
             $('#loding-img-2').show()
             $.get(url, function (result) {
-                $('#expand' + banner_id).text(new_expandto)
+                $('#expand' + banner_id).text(new_expandto + " 00:00:00")
                 successAlert("延期成功")
                 $('#loding-img-2').hide()
             }, 'json')
@@ -427,6 +427,42 @@ function query_store_id(bannerid) {
         $('#forbidden_layer').hide()
         $('#loding-img-2').hide()
     });
+}
+
+
+function do_exceptStore(bannerid){
+    content_html = "    <div class=\"king-page-box\">\n" +
+        "        <div class=\"king-container clearfix\">\n" +
+        "            <form class=\"form-horizontal\">\n" +
+        "                <div class=\"form-group has-feedback clearfix \">\n" +
+        "                    <label class=\"control-label col-sm-3 pt0\" for=\"introduction\">门店ID：</label>\n" +
+        "                    <div class=\"col-sm-9\">\n" +
+        "                        <textarea id=\"store_ids\" class=\"form-control\" rows=\"6\" placeholder=\"填入以逗号分隔的6位数字\"></textarea>\n" +
+        "                    </div>\n" +
+        "                </div>\n" +
+        "            </form>\n" +
+        "        </div>\n" +
+        "    </div>"
+    var d = dialog({
+        width: 600,
+        title: '门店活动到期【'+bannerid+'】',
+        content: content_html,
+        okValue: "确定",
+        ok: function () {
+            store_id_array = $('#store_ids').val().split(',')
+            $.get(site_url + 'add_storeid_to_exceptStore', {data: store_id_array, banner_id: bannerid}, function (res) {
+                if(res.result){
+                    successAlert("添加门店ID成功")
+                }else{
+                    errorAlert("failed")
+                }
+            })
+        },
+        cancelValue: '取消',
+        cancel: function () {
+        },
+    });
+    d.showModal();
 }
 
 

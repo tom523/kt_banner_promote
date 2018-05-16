@@ -15,6 +15,9 @@ from blueking.component.shortcuts import get_client_by_request
 from common.log import logger
 import json
 from django.http import HttpResponse
+from home_application.models_t_bi_banner import TBiBanner
+import datetime
+from django.db.models import Avg, Max
 
 
 def get_user_name(request):
@@ -22,59 +25,64 @@ def get_user_name(request):
 
 
 def t_bi_banner(request):
-    if request.method == "GET":
-        kwargs = {
-            "app_code": APP_ID,
-            "app_secret": APP_TOKEN,
-            "bk_token": request.COOKIES.get('bk_token', ''),
-            "app_id": 5,
-            "task_id": 1,
-        }
-        client = get_client_by_request(request)
-        result = client.job.execute_task(kwargs)
-        logger.debug(result)
-        task_instance_id = result['data']['taskInstanceId']
-        task_result = get_task_ip_log(client, task_instance_id, request)
-        # logger.debug(task_result['data'][0]['stepAnalyseResult'][0]['ipLogContent'][0]['logContent'])
-        promote_table_data = task_result['data'][0]['stepAnalyseResult'][0]['ipLogContent'][0]['logContent']
-        items = []
-        for line in tuple(eval(promote_table_data)):
-            logger.debug(line)
-            if line[29] is not None:
-                exceptStore = "too long" if len(line[29])>10 else line[29]
-            else:
-                exceptStore = None
-            items.append({
-                "bannerid": line[0],
-                "imgageUrl": line[1],
-                "Validfrom": line[5],
-                "validto": line[6],
-                "descCn": line[7],
-                "position": line[11],
-                "starttime": line[12],
-                "endtime": line[13],
-                "channelld": line[21],
-                "exceptStore": exceptStore,
-                "holiday": line[19],
-                "dayofweek": line[20],
-            })
-        return render_json({
-            "catalogues": {
-                "bannerid": "id",
-                "imgageUrl": "图片名称",
-                "Validfrom": "开始日期",
-                "validto": "截止日期",
-                "descCn": "促销名称",
-                "position": "排序号",
-                "starttime": "开始时间",
-                "endtime": "结束时间",
-                "channelld": "外卖或堂食",
-                "exceptStore": "餐厅编号（排除）",
-                "holiday": "节假日",
-                "dayofweek": "周几参与活动",
-            },
-            "items": items
+    '''
+
+    :param request:
+    :return:
+    '''
+    # if request.method == "GET":
+    #     kwargs = {
+    #         "app_code": APP_ID,
+    #         "app_secret": APP_TOKEN,
+    #         "bk_token": request.COOKIES.get('bk_token', ''),
+    #         "app_id": 5,
+    #         "task_id": 1,
+    #     }
+    #     client = get_client_by_request(request)
+    #     result = client.job.execute_task(kwargs)
+    #     task_instance_id = result['data']['taskInstanceId']
+    #     task_result = get_task_ip_log(client, task_instance_id, request)
+    #     # logger.debug(task_result['data'][0]['stepAnalyseResult'][0]['ipLogContent'][0]['logContent'])
+    #     promote_table_data = task_result['data'][0]['stepAnalyseResult'][0]['ipLogContent'][0]['logContent']
+    items = []
+
+    for item in TBiBanner.objects.using('t_bi_banner').all():
+
+        if item.exceptstore is not None:
+            exceptStore = "too long" if len(item.exceptstore)>10 else item.exceptstore
+        else:
+            exceptStore = None
+        items.append({
+            "bannerid": item.bannerid,
+            "imgageUrl": item.imageurl,
+            "Validfrom": item.validfrom.strftime("%Y-%m-%d %H:%M:%S"),
+            "validto": item.validto.strftime("%Y-%m-%d %H:%M:%S"),
+            "descCn": item.desccn,
+            "position": item.position,
+            "starttime": item.starttime,
+            "endtime": item.endtime,
+            "channelld": item.channelid,
+            "exceptStore": exceptStore,
+            "holiday": item.holiday,
+            "dayofweek": item.dayofweek,
         })
+    return render_json({
+        "catalogues": {
+            "bannerid": "id",
+            "imgageUrl": "图片名称",
+            "Validfrom": "开始日期",
+            "validto": "截止日期",
+            "descCn": "促销名称",
+            "position": "排序号",
+            "starttime": "开始时间",
+            "endtime": "结束时间",
+            "channelld": "外卖或堂食",
+            "exceptStore": "餐厅编号（排除）",
+            "holiday": "节假日",
+            "dayofweek": "周几参与活动",
+        },
+        "items": items
+    })
 
 
 def get_task_ip_log(client, task_instance_id, request):
@@ -101,28 +109,32 @@ def new_promote(request):
 def promote_expand(request):
     new_expandto = request.GET.get('new_expandto')
     banner_id = request.GET.get('banner_id')
-    logger.debug(new_expandto)
-    logger.debug(banner_id)
 
-    kwargs = {
-        "app_code": APP_ID,
-        "app_secret": APP_TOKEN,
-        "bk_token": request.COOKIES.get('bk_token', ''),
-        "app_id": 5,
-        "task_id": 2,
-        "steps": [{
-            "stepId": 2,
-            "ipList": "1:192.168.116.94",
-            "scriptParam": new_expandto + " " + banner_id
-        }]
-    }
-    client = get_client_by_request(request)
-    result = client.job.execute_task(kwargs)
-    logger.debug(result)
-    task_instance_id = result['data']['taskInstanceId']
-    task_result = get_task_ip_log(client, task_instance_id, request)
-    logger.debug(task_result)
-    return render_json(task_result)
+    cur = TBiBanner.objects.using('t_bi_banner').get(bannerid=banner_id)
+    cur.promote_expand(new_expandto)
+    return render_json({
+        "result": True
+    })
+
+    # kwargs = {
+    #     "app_code": APP_ID,
+    #     "app_secret": APP_TOKEN,
+    #     "bk_token": request.COOKIES.get('bk_token', ''),
+    #     "app_id": 5,
+    #     "task_id": 2,
+    #     "steps": [{
+    #         "stepId": 2,
+    #         "ipList": "1:192.168.116.94",
+    #         "scriptParam": new_expandto + " " + banner_id
+    #     }]
+    # }
+    # client = get_client_by_request(request)
+    # result = client.job.execute_task(kwargs)
+    # logger.debug(result)
+    # task_instance_id = result['data']['taskInstanceId']
+    # task_result = get_task_ip_log(client, task_instance_id, request)
+    # logger.debug(task_result)
+    # return render_json(task_result)
 
 
 def get_all_store(request):
@@ -240,14 +252,13 @@ def format_date(date):
 def add_promote_record(request):
     pic_name = request.POST.get('pic_name')
     logger.debug(request.POST.get('join_store'))
-    join_store = json.loads(request.POST.get('join_store'))
-    logger.debug(len(join_store))
-    store_id_list = []
-    for store_item in join_store:
-        store_name = store_item['text']
-        store_id = store_item['id']
-        store_id_list.append(store_id)
-    logger.debug(len(store_id_list))
+    not_join_store = request.POST.get('not_join_store')
+    if not_join_store != "":
+        store_id_list = []
+        for store_item in not_join_store:
+            store_name = store_item['text']
+            store_id = store_item['id']
+            store_id_list.append(store_id)
     prmt_datarange = request.POST.get('prmt_datarange')
     prmt_time_start = request.POST.get('prmt_time_start')
     prmt_time_end = request.POST.get('prmt_time_end')
@@ -267,59 +278,95 @@ def add_promote_record(request):
         join_holiday_format = "Y"
     else:
         join_holiday_format ="N"
-    logger.debug(type(str(prmt_datarange)))
-    logger.debug(str(prmt_datarange).replace('&nbsp;', ''))
-    scriptParam = {
-        "pic_name": pic_name,
-        "prmt_date_start": format_date(str(prmt_datarange).replace('&nbsp;', '').split('-')[0].strip()),
-        "prmt_date_end": format_date(str(prmt_datarange).replace('&nbsp;', '').split('-')[1].strip()),
-        "prmt_time_start": prmt_time_start,
-        "prmt_time_end": prmt_time_end,
-        "prmt_descCN": prmt_descCN,
-        "prmt_sortNum": prmt_sortNum,
-        "prmt_wmts": prmt_wmts,
-        "join_day_str": format_join_day(join_sunday, join_monday, join_tuesday, join_wednesday, join_thursday, join_friday, join_saturday),
-        "join_holiday": join_holiday_format,
-        "store_id_list": "NULL" if len(store_id_list) == 0 else ','.join(store_id_list)
-    }
-    scriptParam_list = [
-        scriptParam['pic_name'],
-        scriptParam['prmt_date_start'],
-        scriptParam['prmt_date_end'],
-        scriptParam['prmt_time_start'],
-        scriptParam['prmt_time_end'],
-        scriptParam['prmt_descCN'],
-        scriptParam['prmt_sortNum'],
-        scriptParam['prmt_wmts'],
-        scriptParam['join_day_str'],
-        scriptParam['join_holiday'],
-        scriptParam['store_id_list']
-    ]
 
-    kwargs = {
-        "app_code": APP_ID,
-        "app_secret": APP_TOKEN,
-        "bk_token": request.COOKIES.get('bk_token', ''),
-        "app_id": 5,
-        "task_id": 4,
-        "steps": [{
-            "stepId": 4,
-            "ipList": "1:192.168.116.94",
-            "scriptParam": ' '.join(scriptParam_list)
-        }]
-    }
+    bannerid = TBiBanner.objects.using('t_bi_banner').aggregate(Max('bannerid'))
+    TBiBanner.objects.using('t_bi_banner').create(
+        bannerid=bannerid['bannerid__max']+1,
+        bannertype=1,
+        imageurl=pic_name,
+        relationtype=2,
+        linkedclassid=None,
+        linkedurl=1,
+        validfrom=datetime.datetime.strptime(prmt_datarange.replace('&nbsp;', "").split('-')[0], "%m/%d/%Y"),
+        validto=datetime.datetime.strptime(prmt_datarange.replace('&nbsp;', "").split('-')[1], "%m/%d/%Y"),
+        desccn=prmt_descCN,
+        descen=None,
+        showorder=prmt_sortNum,
+        position=1,
+        starttime=prmt_time_start,
+        endtime=prmt_time_end,
+        market=None,
+        city=None,
+        smallpictureurl=None,
+        ispopup=1,
+        versionid=1,
+        holiday=join_holiday_format,
+        dayofweek=format_join_day(join_sunday, join_monday, join_tuesday, join_wednesday, join_thursday, join_friday, join_saturday),
+        channelid=prmt_wmts,
+        titlecn=prmt_descCN,
+        titleen=None,
+        briefcn=prmt_descCN,
+        briefen=None,
+        altdesc=None,
+        cityselecttype=1,
+        stypes=None,
+        exceptstore=None,
+    )
 
-    client = get_client_by_request(request)
-    result = client.job.execute_task(kwargs)
-    logger.debug(result)
-    task_instance_id = result['data']['taskInstanceId']
-    task_result = get_task_ip_log(client, task_instance_id, request)
-    logger.debug(task_result)
-    logcontent = task_result['data'][0]['stepAnalyseResult'][0]['ipLogContent'][0]['logContent']
-    if str(logcontent).strip() == "1":
-        return render_json({"result":"success"})
-    else:
-        return render_json({"result": "fail"})
+    return render_json({
+        "result": True
+    })
+    # scriptParam = {
+    #     "pic_name": pic_name,
+    #     "prmt_date_start": format_date(str(prmt_datarange).replace('&nbsp;', '').split('-')[0].strip()),
+    #     "prmt_date_end": format_date(str(prmt_datarange).replace('&nbsp;', '').split('-')[1].strip()),
+    #     "prmt_time_start": prmt_time_start,
+    #     "prmt_time_end": prmt_time_end,
+    #     "prmt_descCN": prmt_descCN,
+    #     "prmt_sortNum": prmt_sortNum,
+    #     "prmt_wmts": prmt_wmts,
+    #     "join_day_str": format_join_day(join_sunday, join_monday, join_tuesday, join_wednesday, join_thursday, join_friday, join_saturday),
+    #     "join_holiday": join_holiday_format,
+    #     "store_id_list": "NULL" if len(store_id_list) == 0 else ','.join(store_id_list)
+    # }
+    # scriptParam_list = [
+    #     scriptParam['pic_name'],
+    #     scriptParam['prmt_date_start'],
+    #     scriptParam['prmt_date_end'],
+    #     scriptParam['prmt_time_start'],
+    #     scriptParam['prmt_time_end'],
+    #     scriptParam['prmt_descCN'],
+    #     scriptParam['prmt_sortNum'],
+    #     scriptParam['prmt_wmts'],
+    #     scriptParam['join_day_str'],
+    #     scriptParam['join_holiday'],
+    #     scriptParam['store_id_list']
+    # ]
+    #
+    # kwargs = {
+    #     "app_code": APP_ID,
+    #     "app_secret": APP_TOKEN,
+    #     "bk_token": request.COOKIES.get('bk_token', ''),
+    #     "app_id": 5,
+    #     "task_id": 4,
+    #     "steps": [{
+    #         "stepId": 4,
+    #         "ipList": "1:192.168.116.94",
+    #         "scriptParam": ' '.join(scriptParam_list)
+    #     }]
+    # }
+    #
+    # client = get_client_by_request(request)
+    # result = client.job.execute_task(kwargs)
+    # logger.debug(result)
+    # task_instance_id = result['data']['taskInstanceId']
+    # task_result = get_task_ip_log(client, task_instance_id, request)
+    # logger.debug(task_result)
+    # logcontent = task_result['data'][0]['stepAnalyseResult'][0]['ipLogContent'][0]['logContent']
+    # if str(logcontent).strip() == "1":
+    #     return render_json({"result":"success"})
+    # else:
+    #     return render_json({"result": "fail"})
 
 
 def get_storeid_by_obj(joined_store):
@@ -552,3 +599,16 @@ def contactus(request):
     联系我们
     """
     return render_mako_context(request, '/home_application/contact.html')
+
+
+def add_storeid_to_exceptStore(request):
+    store_id_list = request.GET.getlist('data[]')
+    banner_id = request.GET.get('banner_id')
+    cur = TBiBanner.objects.using('t_bi_banner').get(bannerid=banner_id)
+    cur.add_storeids_to_exceptstore(store_id_list)
+    return render_json({
+        "result": True,
+    })
+
+
+

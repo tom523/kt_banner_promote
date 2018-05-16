@@ -1,20 +1,24 @@
 <%inherit file="../base.html"/>
 <%block name="content">
-<div class="king-block king-block-bordered">
-    <div class="king-block-header king-gray-light">
-        <ul class="king-block-options">
-            <li>
-                <button type="button"><i class="fa fa-cog"></i></button>
-            </li>
-        </ul>
-        <h3 class="king-block-title">填写促销信息</h3>
-    </div>
-    <div class="king-block-content">
+
+    <div class="king-layout2-main">
+        <link href="${STATIC_URL}css/bootstrap.min.css" rel="stylesheet">
+        <link href="${STATIC_URL}assets/daterangepicker-2.0.5/daterangepicker.css" rel="stylesheet">
+        <link href="${STATIC_URL}assets/clockpicker-0.0.7/bootstrap-clockpicker.min.css" rel="stylesheet">
+        <link href="${STATIC_URL}assets/icheck-1.x/skins/square/blue.css" rel="stylesheet">
+        <script src="${STATIC_URL}js/jquery-1.10.2.min.js"></script>
+        <script src="${STATIC_URL}assets/daterangepicker-2.0.5/moment.min.js"></script>
+        <script src="${STATIC_URL}assets/daterangepicker-2.0.5/daterangepicker.js"></script>
+        <script src="${STATIC_URL}assets/clockpicker-0.0.7/bootstrap-clockpicker.min.js"></script>
+        <script src="${STATIC_URL}assets/icheck-1.x/icheck.min.js"></script>
+        <script src="${STATIC_URL}js/csrftoken.js"></script>
+
+
         <div class="king-loading" id="loding-img-2" style="display: none;">
             <img src="https://magicbox.bk.tencent.com/static_api/v3/components/loading1/images/loading_2_b_36x36.gif" />
         </div>
         <form id="my_form" class="form-horizontal row" method="POST">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>基本信息</div>
                     <div class="panel-body" style="height: 800px">
@@ -105,69 +109,41 @@
                                 </div>
                             </div>
                         </div>
+##                         <div class="form-group">
+##                             <label for="join_or_not" class="col-sm-3 control-label">门店是否参加活动：</label>
+##                             <div class="col-sm-7">
+##                                 <select name="" id="join_or_not" class="form-control">
+##                                     <option value="1">参加活动</option>
+##                                     <option value="2">不参加活动</option>
+##                                 </select>
+##                             </div>
+##                         </div>
                         <div class="form-group">
-                            <label for="join_or_not" class="col-sm-3 control-label">门店是否参加活动：</label>
-                            <div class="col-sm-7">
-                                <select name="" id="join_or_not" class="form-control">
-                                    <option value="1">参加活动</option>
-                                    <option value="2">不参加活动</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="store_ids_textarea" class="col-sm-3 control-label"></label>
+                            <label for="store_ids_textarea" class="col-sm-3 control-label">门店ID（排除）</label>
                             <div class="col-sm-7"><textarea name="" id="store_ids_textarea" style="width: 100%" rows="10"></textarea></div>
                         </div>
+##                         <div class="form-group">
+##                             <label for="select_btn" class="col-sm-3 control-label"></label>
+##                             <div class="col-sm-7"><a href="javascript:void(0)" id="select_btn" class="king-btn king-primary" onclick="tree_check()">确认选择以上门店</a></div>
+##                         </div>
                         <div class="form-group">
-                            <label for="select_btn" class="col-sm-3 control-label"></label>
-                            <div class="col-sm-7"><a href="javascript:void(0)" id="select_btn" class="king-btn king-primary" onclick="tree_check()">确认选择以上门店</a></div>
+                            <div class="col-sm-7 col-sm-offset-3">
+            ##                     <input type="submit" class="king-btn king-success mr10" id="new_promote" value="提交">
+                                <a class="king-btn king-primary" id="new_promote" onclick="new_promote()">提交</a>
+                                <input type="reset" class="king-btn king-default" value="取消">
+                            </div>
                         </div>
-
 
                     </div>
                 </div>
             </div>
-            <!-- 左边表单结束 -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="king-page-box king-layout1-main clearfix">
-                        <!-- 左边 start -->
-                        <div class="king-layout1-sidebar column ui-container" style="width:216px;">
-                            <div class="panel panel-default">
-                                <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>选择门店</div>
-                                <div class="panel-body" style="height: 800px; overflow: scroll">
-                                    <div id="treeview_demo8">
-                                        <div id="listenersDemoTree"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- 左边 end -->
-                        <!-- content start -->
-                        <div class="king-content-wrap">
-                            <div class="king-layout1-content ui-container" style="margin-left: 216px; background:#eee; min-height:300px;">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading"><span class="glyphicon glyphicon-list-all"></span>已选门店</div>
-                                    <div class="panel-body" style="height: 800px; overflow: scroll">
-                                        <div id="selectedContainer"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- content end -->
-                    </div>
-                </div>
-            </div>
 
-            <div class="form-group">
-                <div class="col-sm-7 col-sm-offset-3">
-##                     <input type="submit" class="king-btn king-success mr10" id="new_promote" value="提交">
-                    <a class="king-btn king-primary" id="new_promote" onclick="new_promote()">提交</a>
-                    <input type="reset" class="king-btn king-default" value="取消">
-                </div>
-            </div>
+
         </form>
+
     </div>
+
+
     <script type="text/javascript">
 
      // 单个日期和日期范围选择
@@ -208,7 +184,7 @@
         }
     };
     $('#daterangepicker_id').daterangepicker(optionSet1, function(start, end, label){
-        $('#daterangepicker_demo4 span').html(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
+        $('#daterangepicker_id span').html(start.format('YYYY-MM-DD') + ' 至 ' + end.format('YYYY-MM-DD'));
     });
 
     $('#clockpicker_start,#clockpicker_end').clockpicker();
@@ -219,196 +195,20 @@
         increaseArea: '20%' // optional
     });
 
-    var tree_data
-
-    //获取门店信息
-     store_query_url = 'store_query'
-    $('#loding-img-2').show()
-     $('#forbidden_layer').show()
-     $.get(store_query_url, function (retdata) {
-         $('#loding-img-2').hide()
-         $('#forbidden_layer').hide()
-         console.log(retdata.message)
-         tree_data = retdata.message
-         var treeview = $('#listenersDemoTree').data('kendoTreeView');
-         treeview.setDataSource(new kendo.data.HierarchicalDataSource({
-             'data': retdata.message
-         }));
-     }, 'json')
-
-    // kendo tree
-    // 事件样例
-    var treeviewListenerDemo=function(option){
-        this.selected=[];
-        this.init(option);
-    }
-    treeviewListenerDemo.prototype={
-         constructor:treeviewListenerDemo,
-         init:function(option){
-             var opt={
-                treeContainer:'#listenersDemoTree',
-                selectedContainer:'#selectedContainer',
-                dataSource:[{
-                    text: "加载中...",
-                    items: [
-                    ]
-                 },
-                  ]
-             };
-             this.option=$.extend(opt,option);
-             this.treeContainer=$(this.option.treeContainer);
-             this.selectedContainer=$(this.option.selectedContainer);
-             this.initTree();
-             this.initEvent();
-         },
-         initTree:function(){
-             this.treeContainer.kendoTreeView({
-                checkboxes: {
-                    checkChildren : true
-                },
-                dataSource: this.option.dataSource,
-                check: this._onCheck.bind(this),
-                 messages: {
-                    loading: "加载中......"
-                 }
-             });
-             this.treeView=this.treeContainer.data("kendoTreeView");
-         },
-         _onCheck:function(e){
-             var me=this;
-             me.selected=[];
-             function getChecked(nodes) {
-                 for (var i = 0; i < nodes.length; i++) {
-                     if (nodes[i].hasChildren) {
-                         getChecked(nodes[i].children.view());
-                     }else if (nodes[i].checked&&nodes[i].parentNode()) {
-                         me.selected.push(nodes[i]);
-                     }
-                 }
-             }
-             getChecked(me.treeView.dataSource.view());
-             me.upSelected();
-         },
-         upSelected:function(){
-             var me=this,
-                 selected=me.selected,
-                 node,
-                 nodeText=[],
-                 html='';
-             if(selected.length){
-                 html="<ul>";
-                 for(var i=0;i<selected.length;i++){
-                     node=selected[i];
-                     nodeText.push('<li style="float:left; width:110px"><input type="checkbox" checked>'+node.text+'</li>');
-                 }
-                 html+=nodeText.join('');
-                 html+='</ul>';
-             }
-             this.selectedContainer.html(html);
-         },
-         _remove:function(e){
-             var me=this,
-                 item=e.target.parentNode,
-                 items=item.parentNode.childNodes;
-             for(var i=0;i<items.length;i++){
-                 if(item==items[i]){
-                    me.selected[i].checked=false;
-                    me.treeView.findByText(me.selected[i].text).find('input').attr('checked',false);
-                    me._onCheck();
-                    break;
-                 }
-             }
-         },
-         initEvent:function(){
-             var me=this;
-             me.selectedContainer.on('click.listenerDemo','input',function(e){
-                 me._remove(e);
-             });
-         }
-    }
-    var listenerDemo=new treeviewListenerDemo();
-
-
-     $('#my_form').submit(function (e) {
-         e.preventDefault();
-         alert("prefent!!")
-     })
-
      $('#select_pic').on("change", function () {
          console.log(this.files)
          filename = this.files[0].name;
          console.log(filename)
      })
 
-     // 给参数ids的门店添加True
-     function _add_true_for_tree(ids, join_or_not){
-        ids_array = ids.split(',')
-         console.log(ids_array)
-        for(var i=0; i<tree_data.length; i++){
-            cur_market = tree_data[i];
-            citys_array = cur_market.items;
-            for(var j=0; j<citys_array.length; j++){
-                cur_city = citys_array[j]
-                districts_array = cur_city.items;
-                for(var k=0; k<districts_array.length; k++){
-                    cur_district = districts_array[k]
-                    stores_array = cur_district.items
-                    for(var m=0; m<stores_array.length; m++){
-                        cur_store = stores_array[m]
-                        // 如果当前门店id在所填id数组中，且不参加活动
-                        // $.inArray(cur_store.id, ids_array) != '-1'  表示在数组中
-                        if($.inArray(cur_store.id, ids_array) != '-1'){
-                            if (join_or_not == '2') {
-                                cur_store.checked = true
-                            } else {
-                                delete cur_store.checked
-                            }
-                        // 如果当前门店id不在所填id数组中，且参加活动
-                        }else{
-                            if(join_or_not == '1'){
-                                cur_store.checked = true
-                            } else {
-                                delete cur_store.checked
-                            }
-                        }
-
-                    }
-                }
-
-            }
-        }
-     }
-     // 给不是参数ids的门店添加True
-     function _add_except_true_for_tree(ids){
-
-     }
-
-     // 自动选择门店树
-     function tree_check(){
-        ##  $('#loding-img-2').show()
-        ##  $('#forbidden_layer').show()
-        ids = $('#store_ids_textarea').val()
-        join_or_not = $('#join_or_not').val()
-        console.log(ids)
-        console.log(join_or_not)
-
-        _add_true_for_tree(ids, join_or_not)
-        console.log(tree_data)
-
-        ##  刷新数据树
-        var treeview = $('#listenersDemoTree').data('kendoTreeView');
-        treeview.setDataSource(new kendo.data.HierarchicalDataSource({
-            'data': tree_data
-        }));
-
-        listenerDemo._onCheck()
-        ##  $('#loding-img-2').hide()
-        ##  $('#forbidden_layer').hide()
-
-     }
 
      // 新建促销
      function new_promote(){
+         if(filename.length == 0){
+             errorAlert("请选择图片文件");
+             return
+         }
+
          $('#loding-img-2').show()
          $('#forbidden_layer').show()
          datarange = $('#daterangepicker_id').val()
@@ -428,10 +228,11 @@
          saturday_check = $('#saturday_check').parent().hasClass('checked')
          optionsRadiosY = $('#optionsRadiosY').parent().hasClass('checked')
          optionsRadiosN =$('#optionsRadiosN').parent().hasClass('checked')
-         storedata = listenerDemo.selected
+         not_join_store = $('#store_ids_textarea').val()
+         ##  storedata = listenerDemo.selected
 
-         console.log(typeof(storedata))
-         console.log(typeof(JSON.stringify(storedata)))
+
+         debugger
           postdata = {
               pic_name: filename,
               prmt_datarange: datarange,
@@ -448,21 +249,20 @@
               join_friday: friday_check,
               join_saturday: saturday_check,
               join_holiday: optionsRadiosY,
-              join_store: JSON.stringify(storedata)
+              not_join_store: not_join_store,
           }
-         console.log(postdata)
          submit_url = 'rrrrr'
 
           $.ajax({
               url: submit_url,
               type: "POST",
-               data: postdata,
+              data: postdata,
               dataType: 'json',
-               headers: {"X-CSRFtoken":$.cookie("csrftoken")},
+               ##  headers: {"X-CSRFtoken":$.cookie("csrftoken")},
               success: function (retdata) {
                   $('#loding-img-2').hide()
                   $('#forbidden_layer').hide()
-                  if(retdata.result == "success")
+                  if(retdata.result)
                   {
                       console.log(retdata)
                       window.location.href='${SITE_URL}'
@@ -473,13 +273,5 @@
               }
           })
      }
-
-     ##  $('#new_promote').click(function () {
-     ##
-     ##      ##  $.post(submit_url, postdata, function () {
-     ##      ##      alert('dddddd')
-     ##      ##  }, 'json')
-     ##  })
     </script>
-</div>
 </%block>
