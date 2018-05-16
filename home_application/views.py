@@ -253,12 +253,12 @@ def add_promote_record(request):
     pic_name = request.POST.get('pic_name')
     logger.debug(request.POST.get('join_store'))
     not_join_store = request.POST.get('not_join_store')
-    if not_join_store != "":
-        store_id_list = []
-        for store_item in not_join_store:
-            store_name = store_item['text']
-            store_id = store_item['id']
-            store_id_list.append(store_id)
+    # if not_join_store != "":
+    #     store_id_list = []
+    #     for store_item in not_join_store:
+    #         store_name = store_item['text']
+    #         store_id = store_item['id']
+    #         store_id_list.append(store_id)
     prmt_datarange = request.POST.get('prmt_datarange')
     prmt_time_start = request.POST.get('prmt_time_start')
     prmt_time_end = request.POST.get('prmt_time_end')
@@ -310,7 +310,7 @@ def add_promote_record(request):
         altdesc=None,
         cityselecttype=1,
         stypes=None,
-        exceptstore=None,
+        exceptstore=not_join_store,
     )
 
     return render_json({

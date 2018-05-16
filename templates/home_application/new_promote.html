@@ -195,6 +195,7 @@
         increaseArea: '20%' // optional
     });
 
+    filename = ""
      $('#select_pic').on("change", function () {
          console.log(this.files)
          filename = this.files[0].name;
@@ -209,8 +210,8 @@
              return
          }
 
-         $('#loding-img-2').show()
-         $('#forbidden_layer').show()
+
+
          datarange = $('#daterangepicker_id').val()
          console.log(datarange)
          time_start = $('#time_start').val()
@@ -231,8 +232,16 @@
          not_join_store = $('#store_ids_textarea').val()
          ##  storedata = listenerDemo.selected
 
+         if(not_join_store.length != 0){
+             if(!myutils.isArrayItemNo(not_join_store.split(','))){
+                 errorAlert("非正常门店ID，门店ID必须是1个或多个6位数字，并且以英文逗号分隔。")
+                 return
+             }
+         }
 
-         debugger
+
+         $('#loding-img-2').show()
+         $('#forbidden_layer').show()
           postdata = {
               pic_name: filename,
               prmt_datarange: datarange,
