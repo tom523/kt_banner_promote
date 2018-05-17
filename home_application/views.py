@@ -116,13 +116,13 @@ def promote_expand(request):
     cur = TBiBanner.objects.using('t_bi_banner').get(bannerid=banner_id)
     try:
         cur.promote_expand(new_expandto)
-        Operation.success(request.user.username, "promote expanded", (banner_id, new_expandto))
+        Operation.success(request.user.username, "promote expanded", "banner_id:%s new_expandto:%s" % (banner_id, new_expandto))
         return render_json({
             "result": True
         })
 
     except:
-        Operation.fail(request.user.username, "promote expanded", (banner_id, new_expandto))
+        Operation.fail(request.user.username, "promote expanded", "banner_id:%s new_expandto:%s" % (banner_id, new_expandto))
         return render_json({
             "result": False
         })
@@ -306,12 +306,12 @@ def add_promote_record(request):
             stypes=None,
             exceptstore=not_join_store,
         )
-        Operation.success(request.user.username, "promote added", (pic_name,prmt_descCN))
+        Operation.success(request.user.username, "promote added", "pic_name:%s, prmt_descCN:%s" % (pic_name,prmt_descCN))
         return render_json({
             "result": True
         })
     except Exception,e:
-        Operation.fail(request.user.username, "promote added", (pic_name,prmt_descCN))
+        Operation.fail(request.user.username, "promote added", "pic_name:%s, prmt_descCN:%s" % (pic_name,prmt_descCN))
         return render_json({
             "result": False
         })
@@ -348,15 +348,16 @@ def add_storeid_to_exceptStore(request):
     cur = TBiBanner.objects.using('t_bi_banner').get(bannerid=banner_id)
     try:
         cur.add_storeids_to_exceptstore(store_id_list)
+        Operation.success(request.user.username, "promote ended", "banner_id:%s store_id_list:%s" % (banner_id, store_id_list))
         return render_json({
             "result": True,
         })
-        Operation.success(request.user.username, "promote ended", (banner_id, store_id_list))
+
     except:
+        Operation.fail(request.user.username, "promote ended", "banner_id:%s store_id_list:%s" % (banner_id, store_id_list))
         return render_json({
             "result": False,
         })
-        Operation.fail(request.user.username, "promote ended", (banner_id, store_id_list))
 
 
 

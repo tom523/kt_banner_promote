@@ -450,6 +450,13 @@ function do_exceptStore(bannerid){
         okValue: "确定",
         ok: function () {
             store_id_array = $('#store_ids').val().split(',')
+            if(store_id_array == ""){
+                errorAlert("门店ID不能为空")
+                return
+            }else if(!myutils.isArrayItemNo(store_id_array)){
+                errorAlert("非正常门店ID，门店ID必须是1个或多个6位数字，并且以英文逗号分隔。")
+                return
+            }
             $.get(site_url + 'add_storeid_to_exceptStore', {data: store_id_array, banner_id: bannerid}, function (res) {
                 if(res.result){
                     successAlert("添加门店ID成功")
